@@ -61,7 +61,7 @@ class TestApiClient(object):
     resource_mapping = {
             'users': {
                 'resource': 'users/',
-                'method': 'get'
+                'methods': ['get'],
             }
         }
 
