@@ -5,7 +5,7 @@ Toy project to build a python API client with the following capabilities:
 - Allow creation of padronized API clients avoiding the need to learn a new library for each service.
 - Hypermedia support.
 - Pagination support.
-- Compatibility with RESTfull services.
+- Compatibility with RESTfull principles.
 
 ## Exceptions
 
