@@ -48,6 +48,11 @@ status = twitter_cli.statuses_show({'id': 123456789})
 
 user = status.links.user().follow_link() # follows de link contained in user field
 
+cli.users
+cli.users()
+cli.users.follow_link('self')
+cli.users.next.follow_link().next()
+
 TwitterApiClient.print_docs()
 # prints full resource listing with descriptions
 ```

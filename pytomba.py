@@ -1,48 +1,49 @@
 # coding: utf-8
 
-
 import requests
 
 
 class ApiClient(object):
 
-    def __init__(self, api, resource=None, data=None, **kwargs):
+    def __init__(self, api, resource=None, data=None, extra_args={}, *args, **kwargs):
         self.api = api
         self.resource = resource
         self.data = data
-        self.extra_args = kwargs
+        self.extra_args = extra_args
+
+        self.api.extra_args = extra_args
 
     def __call__(self, *args, **kwargs):
         if self.resource:
-            return self.get_resource(**kwargs)
+            return self.get_resource(*args, **kwargs)
 
         if self.data:
             return self.data
 
-        return ApiClient(self.api.__class__(), **self.extra_args)
+        if args:
+            self.extra_args = args[0]
+        return ApiClient(self.api.__class__(), extra_args=self.extra_args)
 
     def __getattr__(self, name):
         if self.resource:
             return self.get_resource()
 
         if self.data:
-            return  ApiClient(self.api.__class__(), data=self.data[name], **self.extra_args)
+            return ApiClient(self.api.__class__(), data=self.data[name], extra_args=self.extra_args)
 
         resource_mapping = self.api.resource_mapping
         if name in resource_mapping:
             self.resource = resource_mapping[name]
-            return self.get_resource()
+            return self
 
     def make_request(self, method, url, **kwargs):
-        # self.response = requests.request(method, url, **kwargs)
-        # response_data = self.api.process_response(self.response)
+        request_kwargs = self.api.get_request_kwargs()
+        request_kwargs.update(kwargs)
 
-        response_data = {
-            'next': 'http://vinta.com.br/next', 
-            'links': [{'prop': 'self', 'href': 'http://vinta.com.br/'}]
-        }
+        self.response = requests.request(method, url=url, **request_kwargs)
+        response_data = self.api.response_to_native(self.response)
 
-        return ApiClient(self.api.__class__(), data=response_data, **self.extra_args)
+        return ApiClient(self.api.__class__(), data=response_data, extra_args=self.extra_args)
 
     def get_request_url(self):
         if self.resource:
@@ -51,8 +52,9 @@ class ApiClient(object):
         if self.data:
             return self.data
 
-    def get_resource(self, **kwargs):
+    def get_resource(self, url_params, *args, **kwargs):
         url = self.get_request_url()
+        url = url.format(**url_params)
         return self.make_request('GET', url, **kwargs)
 
     def get(self, **kwargs):
@@ -95,31 +97,13 @@ class ApiClient(object):
         return self.make_request('GET', link, **kwargs)
 
 
-class TestApiClient(object):
+class BaseClientAdapter(object):
 
-    api_root = 'http://www.vinta.com.br'
+    def get_request_kwargs(self):
+        return {}
 
-    resource_mapping = {
-            'users': {
-                'resource': 'users/',
-                'methods': ['get'],
-            }
-        }
-
-    def process_response(self, response):
-        return response
+    def response_to_native(self, response):
+        raise NotImplementedError
 
     def find_link(self, data, link_name):
-        for link in data['links']:
-            if link['prop'] == link_name:
-                return link['href']
-
-
-Cli = ApiClient(TestApiClient())
-
-cli = Cli()
-
-print cli.users
-print cli.users()
-print cli.users.follow_link('self')
-print cli.users.next.follow_link().next()
+        raise NotImplementedError

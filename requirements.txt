@@ -1,2 +1,5 @@
+oauthlib==0.6.3
+python-decouple==2.3
 requests==2.4.1
+requests-oauthlib==0.4.1
 wsgiref==0.1.2
