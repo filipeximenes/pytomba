@@ -1,22 +1,24 @@
+# About
 
-## available exceptions
+Toy project to build a python API client with the following capabilities:
+- Easy adaptation to the main API services available on the Web.
+- Allow creation of padronized API clients avoiding the need to learn a new library for each service.
+- Hypermedia support.
+- Pagination support.
+- Compatibility with RESTfull services.
 
-ApiError
-ApiAuthorizationError
-ApiServerError
-ApiClientError
+## Exceptions
 
-## usage:
+- ApiError
+- ApiAuthorizationError
+- ApiServerError
+- ApiClientError
+
+## Usage:
 
 ```
-# class TwitterResponseWrapper(ApiClientResponseWrapper):
-
-    
-
-
 class TwitterApiClient(ApiClient):
-    # response_wrapper_class = TwitterResponseWrapper
-    
+
     resource_mapping = {
         'statuses_show': {
             'resource': 'statuses/show/{id}',
@@ -35,25 +37,6 @@ class TwitterApiClient(ApiClient):
             'method': 'post',
         },
     }
-
-    def _get_request_params(self):
-        # ...
-        return request
-
-    def _process_response(self, response):
-        # process
-        # ex.: unwrap response, throw exceptions ...
-        return response
-
-    def _paginated(self, seed):
-        url = seed
-        while url:
-            data = self._get(url)
-
-            for bla in data.data:
-                yield bla
-
-            url = data.links.next
 
 
 twitter_cli = TwitterApiClient()

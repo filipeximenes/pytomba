@@ -13,7 +13,6 @@ class ApiClient(object):
         self.extra_args = kwargs
 
     def __call__(self, *args, **kwargs):
-
         return ApiClient(self.api.__class__(), **self.extra_args)
 
     def __getattr__(self, name):
@@ -30,7 +29,7 @@ class ApiClient(object):
 
     def __get(self, url, **kwargs):
         # fetch resource
-        return ApiClient(self.api.__class__(), data={'links': [{'prop': 'self', 'href': 'link'}]}, **self.extra_args)
+        return ApiClient(self.api.__class__(), data={'links': [{'prop': 'self', 'href': 'http://test.com'}]}, **self.extra_args)
 
     def get_resource(self, **kwargs):
         return self.__get(self.api.api_root + '/' + self.resource['resource'], **kwargs)
@@ -62,7 +61,7 @@ class TestApiClient(object):
     def find_link(self, data, link_name):
         for link in data['links']:
             if link['prop'] == link_name:
-                return link
+                return link['href']
 
 
 Cli = ApiClient(TestApiClient())
