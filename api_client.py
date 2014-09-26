@@ -34,8 +34,13 @@ class ApiClient(object):
             return self.get_resource()
 
     def make_request(self, method, url, **kwargs):
-        self.response = requests.request(method, url, **kwargs)
-        response_data = self.api.process_response(self.response)
+        # self.response = requests.request(method, url, **kwargs)
+        # response_data = self.api.process_response(self.response)
+
+        response_data = {
+            'next': 'http://vinta.com.br/next', 
+            'links': [{'prop': 'self', 'href': 'http://vinta.com.br/'}]
+        }
 
         return ApiClient(self.api.__class__(), data=response_data, **self.extra_args)
 
@@ -102,7 +107,7 @@ class TestApiClient(object):
         }
 
     def process_response(self, response):
-        return response.json()
+        return response
 
     def find_link(self, data, link_name):
         for link in data['links']:
@@ -117,4 +122,4 @@ cli = Cli()
 print cli.users
 print cli.users()
 print cli.users.follow_link('self')
-print cli.users.next.follow_link()
+print cli.users.next.follow_link().next()
