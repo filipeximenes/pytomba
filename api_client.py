@@ -1,7 +1,7 @@
 # coding: utf-8
 
 
-# import requests
+import requests
 
 
 class ApiClient(object):
@@ -33,33 +33,61 @@ class ApiClient(object):
             self.resource = resource_mapping[name]
             return self.get_resource()
 
-    def __get(self, url, **kwargs):
-        # fetch resource
-        response_data = {
-            'next': 'http://www.vinta.com.br/next',
-            'links': [
-                {'prop': 'self', 'href': 'http://test.com'}
-            ]
-        }
+    def make_request(self, method, url, **kwargs):
+        self.response = requests.request(method, url, **kwargs)
+        response_data = self.api.process_response(self.response)
+
         return ApiClient(self.api.__class__(), data=response_data, **self.extra_args)
 
+    def get_request_url(self):
+        if self.resource:
+            return self.api.api_root + '/' + self.resource['resource']
+
+        if self.data:
+            return self.data
+
     def get_resource(self, **kwargs):
-        return self.__get(self.api.api_root + '/' + self.resource['resource'], **kwargs)
+        url = self.get_request_url()
+        return self.make_request('GET', url, **kwargs)
 
     def get(self, **kwargs):
-        if self.resource:
-            return self.get_resource(**kwargs)
+        url = self.get_request_url()
+        return self.make_request('GET', url, **kwargs)
+
+    def post(self, **kwargs):
+        url = self.get_request_url()
+        return self.make_request('POST', url, **kwargs)
+
+    def put(self, **kwargs):
+        url = self.get_request_url()
+        return self.make_request('PUT', url, **kwargs)
+
+    def patch(self, **kwargs):
+        url = self.get_request_url()
+        return self.make_request('PATCH', url, **kwargs)
+
+    def delete(self, **kwargs):
+        url = self.get_request_url()
+        return self.make_request('DELETE', url, **kwargs)
+
+    def head(self, **kwargs):
+        url = self.get_request_url()
+        return self.make_request('HEAD', url, **kwargs)
+
+    def options(self, **kwargs):
+        url = self.get_request_url()
+        return self.make_request('OPTIONS', url, **kwargs)
 
     def follow_link(self, link_name=None, **kwargs):
         if not link_name:
-            return self.__get(self.data, **kwargs)
+            return self.get(**kwargs)
 
         link = self.api.find_link(self.data, link_name)
 
         if not link:
             return
 
-        return self.__get(link, **kwargs)
+        return self.make_request('GET', link, **kwargs)
 
 
 class TestApiClient(object):
@@ -72,6 +100,9 @@ class TestApiClient(object):
                 'methods': ['get'],
             }
         }
+
+    def process_response(self, response):
+        return response.json()
 
     def find_link(self, data, link_name):
         for link in data['links']:
