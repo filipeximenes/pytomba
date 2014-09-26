@@ -35,7 +35,12 @@ class ApiClient(object):
 
     def __get(self, url, **kwargs):
         # fetch resource
-        response_data = {'links': [{'prop': 'self', 'href': 'http://test.com'}]}
+        response_data = {
+            'next': 'http://www.vinta.com.br/next',
+            'links': [
+                {'prop': 'self', 'href': 'http://test.com'}
+            ]
+        }
         return ApiClient(self.api.__class__(), data=response_data, **self.extra_args)
 
     def get_resource(self, **kwargs):
@@ -45,7 +50,10 @@ class ApiClient(object):
         if self.resource:
             return self.get_resource(**kwargs)
 
-    def follow_link(self, link_name, **kwargs):
+    def follow_link(self, link_name=None, **kwargs):
+        if not link_name:
+            return self.__get(self.data, **kwargs)
+
         link = self.api.find_link(self.data, link_name)
 
         if not link:
@@ -78,3 +86,4 @@ cli = Cli()
 print cli.users
 print cli.users()
 print cli.users.follow_link('self')
+print cli.users.next.follow_link()
