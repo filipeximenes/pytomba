@@ -15,6 +15,8 @@ class ApiClient(object):
 
     def __call__(self, *args, **kwargs):
         if self.resource:
+            if not args:
+                args = ({},)
             return self.get_resource(*args, **kwargs)
 
         if self.data:
@@ -26,7 +28,7 @@ class ApiClient(object):
 
     def __getattr__(self, name):
         if self.resource:
-            return self.get_resource()
+            return self.get_resource({})
 
         if self.data:
             return ApiClient(self.api.__class__(), data=self.data[name], extra_args=self.extra_args)

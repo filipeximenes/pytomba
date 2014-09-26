@@ -48,3 +48,7 @@ cli = TwitterApiClient({
 
 # Fetching my linkedin profile HTML
 print cli.statuses_show({'id': 515109944312733696}).user.url.follow_link().data.text.encode('utf-8')
+
+# Fetching mentions timeline
+print cli.mentions_timeline()
+
