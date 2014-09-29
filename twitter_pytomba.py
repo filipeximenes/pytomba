@@ -28,10 +28,7 @@ class TwitterClientAdapter(BaseClientAdapter):
         }
 
     def response_to_native(self, response):
-        try:
-            return response.json()
-        except:
-            return response
+        return response.json()
 
 
 TwitterApiClient = ApiClient(TwitterClientAdapter())
@@ -46,9 +43,8 @@ cli = TwitterApiClient({
         'access_token_secret':  config('ACCESS_TOKEN_SECRET'),
     })
 
-# Fetching my linkedin profile HTML
-print cli.statuses_show({'id': 515109944312733696}).user.url.follow_link().data.text.encode('utf-8')
+print cli.statuses_show({'id': 515109944312733696}).user.url()
 
 # Fetching mentions timeline
-print cli.mentions_timeline()
+# print cli.mentions_timeline().data
 
