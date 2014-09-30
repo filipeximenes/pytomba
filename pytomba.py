@@ -15,11 +15,11 @@ class ApiClient(object):
 
     def __call__(self, *args, **kwargs):
         if self.resource:
-            if not args:
+            if not args is not None:
                 args = ({},)
             return self.get_resource(*args, **kwargs)
 
-        if self.data:
+        if self.data is not None:
             return self.data
 
         if args:
@@ -27,16 +27,20 @@ class ApiClient(object):
         return ApiClient(self.api.__class__(), extra_args=self.extra_args)
 
     def __getattr__(self, name):
-        if self.resource:
+        if self.resource is not None:
             return self.get_resource({})
 
-        if self.data:
+        if self.data is not None:
             return ApiClient(self.api.__class__(), data=self.data[name], extra_args=self.extra_args)
 
         resource_mapping = self.api.resource_mapping
         if name in resource_mapping:
             self.resource = resource_mapping[name]
             return self
+
+    def list_nodes(self):
+        if self.data:
+            return [key for key, value in self.data.items()]
 
     def make_request(self, method, url, **kwargs):
         request_kwargs = self.api.get_request_kwargs()
