@@ -46,5 +46,6 @@ cli = TwitterApiClient({
 # print cli.statuses_show({'id': 515109944312733696}).user.url()
 
 # Fetching mentions timeline
-print cli.user_timeline()[0].list_nodes()
+response = cli.user_timeline()
 
+print(response[0].text())

@@ -14,10 +14,12 @@ class ApiClient(object):
         self.api.extra_args = extra_args
 
     def __call__(self, *args, **kwargs):
-        if self.resource:
+        if self.resource is not None:
             if not args:
-                args = ({},)
-            return self.get_resource(*args, **kwargs)
+                url_params = {}
+            else:
+                url_params = args[0]
+            return self.get(url_params=url_params, **kwargs)
 
         if self.data is not None:
             return self.data
@@ -28,7 +30,7 @@ class ApiClient(object):
 
     def __getattr__(self, name):
         if self.resource is not None:
-            return self.get_resource({})
+            return self.get({})
 
         if self.data is not None:
             return ApiClient(self.api.__class__(), data=self.data[name], extra_args=self.extra_args)
@@ -39,7 +41,7 @@ class ApiClient(object):
             return self
 
     def __getitem__(self, key):
-        return self.__getattr__(self, key)
+        return self.__getattr__(key)
 
     def list_nodes(self):
         if self.data:
@@ -57,44 +59,42 @@ class ApiClient(object):
 
         return ApiClient(self.api.__class__(), data=response_data, extra_args=self.extra_args)
 
-    def get_request_url(self):
+    def get_request_url(self, url_params={}):
         if self.resource:
-            return self.api.api_root + '/' + self.resource['resource']
+            url = self.api.api_root + '/' + self.resource['resource']
+            if url_params:
+                url = url.format(**url_params)
+            return url
 
         if self.data:
             return self.data
 
-    def get_resource(self, url_params, *args, **kwargs):
-        url = self.get_request_url()
-        url = url.format(**url_params)
+    def get(self, url_params={}, **kwargs):
+        url = self.get_request_url(url_params)
         return self.make_request('GET', url, **kwargs)
 
-    def get(self, **kwargs):
-        url = self.get_request_url()
-        return self.make_request('GET', url, **kwargs)
-
-    def post(self, **kwargs):
-        url = self.get_request_url()
+    def post(self, url_params={}, **kwargs):
+        url = self.get_request_url(url_params)
         return self.make_request('POST', url, **kwargs)
 
-    def put(self, **kwargs):
-        url = self.get_request_url()
+    def put(self, url_params={}, **kwargs):
+        url = self.get_request_url(url_params)
         return self.make_request('PUT', url, **kwargs)
 
-    def patch(self, **kwargs):
-        url = self.get_request_url()
+    def patch(self, url_params={}, **kwargs):
+        url = self.get_request_url(url_params)
         return self.make_request('PATCH', url, **kwargs)
 
-    def delete(self, **kwargs):
-        url = self.get_request_url()
+    def delete(self, url_params={}, **kwargs):
+        url = self.get_request_url(url_params)
         return self.make_request('DELETE', url, **kwargs)
 
-    def head(self, **kwargs):
-        url = self.get_request_url()
+    def head(self, url_params={}, **kwargs):
+        url = self.get_request_url(url_params)
         return self.make_request('HEAD', url, **kwargs)
 
-    def options(self, **kwargs):
-        url = self.get_request_url()
+    def options(self, url_params={}, **kwargs):
+        url = self.get_request_url(url_params)
         return self.make_request('OPTIONS', url, **kwargs)
 
     def follow_link(self, link_name=None, **kwargs):
