@@ -38,6 +38,9 @@ class ApiClient(object):
             self.resource = resource_mapping[name]
             return self
 
+    def __getitem__(self, key):
+        return self.__getattr__(self, key)
+
     def list_nodes(self):
         if self.data:
             if isinstance(self.data, list):
