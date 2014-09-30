@@ -43,9 +43,8 @@ cli = TwitterApiClient({
         'access_token_secret':  config('ACCESS_TOKEN_SECRET'),
     })
 
-# print cli.statuses_show({'id': 515109944312733696}).user.url()
+# status = cli.statuses_show({'id': 515109944312733696})
+# print(status.user.url())
 
-# Fetching mentions timeline
-response = cli.user_timeline()
-
-print(response[0].text())
+timeline = cli.user_timeline()
+print(timeline[0].text())
