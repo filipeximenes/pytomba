@@ -8,8 +8,8 @@ from pytomba import ApiClient, BaseClientAdapter
 class TwitterClientAdapter(BaseClientAdapter):
     api_root = 'https://api.twitter.com/1.1'
     resource_mapping = {
-        'mentions_timeline': {
-            'resource': 'statuses/mentions_timeline.json',
+        'user_timeline': {
+            'resource': 'statuses/user_timeline.json',
             'methods': ['get'],
         },
         'statuses_show': {
@@ -43,8 +43,8 @@ cli = TwitterApiClient({
         'access_token_secret':  config('ACCESS_TOKEN_SECRET'),
     })
 
-print cli.statuses_show({'id': 515109944312733696}).user.url()
+# print cli.statuses_show({'id': 515109944312733696}).user.url()
 
 # Fetching mentions timeline
-# print cli.mentions_timeline().data
+print cli.user_timeline()[0].list_nodes()
 

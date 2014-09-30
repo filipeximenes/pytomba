@@ -15,7 +15,7 @@ class ApiClient(object):
 
     def __call__(self, *args, **kwargs):
         if self.resource:
-            if not args is not None:
+            if not args:
                 args = ({},)
             return self.get_resource(*args, **kwargs)
 
@@ -40,6 +40,9 @@ class ApiClient(object):
 
     def list_nodes(self):
         if self.data:
+            if isinstance(self.data, list):
+                return []
+            
             return [key for key, value in self.data.items()]
 
     def make_request(self, method, url, **kwargs):
