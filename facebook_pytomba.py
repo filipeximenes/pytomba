@@ -31,17 +31,19 @@ class FacebookClientAdapter(BaseClientAdapter):
                     'token_type': 'Bearer'})
         }
 
-    def response_to_native(self, response):
-        return response.json()
-
 
 FacebookApiClient = ApiClient(FacebookClientAdapter())
 
 
 api = FacebookApiClient({
         'client_id': '1495124414107995',
-        'access_token': 'CAAVPzseZAEVsBAPvhGgyeDNkYi5MjnezyZBZATYvSD5hPXZAySvhniEcjhStUWp5rjWfNLsAeOJJYbykR8yZA55fS3IY9nWN6vh9QDNZCgD0hmvnE6ezeWZBu3JdfxNnLOgYrJiI8fiIcAJ2f6ZA8XZCzUvWNNPg1ZBHpJsyrUOWtgXsToGz2GLPWzhNZCLQGOrjZA8nBrZALdyKJVTUnI0lAERrU',
+        'access_token': 'CAAVPzseZAEVsBAPIL67nvZBilBuDCLvCSjFZA4Khp2LU9w2o8lIAzZBGuOO07vVpNziykOwUZCpeNdYF3yz06Edse1wxqzHJZA9TnqY6u0t0gJbxBrmSwXsV1vhRGHRZB7FpH7BNVIZC5w0MFPu5ZBvsoBOSoIvTHX84fKxN6EIZAKAigdnJ8zBZBe3iRLGn85T0oSN1gSwzQJjgvOIgJ3MoUsU',
     })
 
-print api.user({'user': 'me'}).list_nodes()
+# user = api.user({'user': 'me'}).get()
+# print user.name.data
 
+# user = api.user
+# print user.data
+# user = user.get()
+# print user.data
