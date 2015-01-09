@@ -51,7 +51,7 @@ class ApiClient(object):
         return ApiClient(self._api.__class__(), data=response_data, api_params=self._api_params)
 
     def __getattr__(self, name):
-        if self._data and name in self._data:
+        if self._data and (isinstance(self._data, list) or name in self._data) :
             return ApiClient(self._api.__class__(), data=self._data[name], api_params=self._api_params, current_attr_name=name)
 
         resource_mapping = self._api.resource_mapping
