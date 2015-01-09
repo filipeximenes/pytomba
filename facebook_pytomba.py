@@ -26,12 +26,12 @@ class FacebookClientAdapter(BaseClientAdapter):
         },
     }
 
-    def get_request_kwargs(self):
-        client_id = self.extra_args.get('client_id')
+    def get_request_kwargs(self, api_params):
+        client_id = api_params.get('client_id')
         return {
             'auth': OAuth2(client_id, 
                 token={
-                    'access_token': self.extra_args.get('access_token'),
+                    'access_token': api_params.get('access_token'),
                     'token_type': 'Bearer'})
         }
 
@@ -39,12 +39,12 @@ class FacebookClientAdapter(BaseClientAdapter):
 FacebookApiClient = ApiClient(FacebookClientAdapter())
 
 
-api = FacebookApiClient({
+api = FacebookApiClient(api_params={
         'client_id': '1495124414107995',
-        'access_token': 'CAAVPzseZAEVsBAIvZAAIZB7OthClPArigGC6gHXVhjNxwzr6gDZA9GRZBeRDKC9GaqUTFiM4soZCoyWrUsvsXvx3KiVI0ZB7rqWWRx5CK4fKl4sdlXOnlR2aXOMwS1aDXVf1bo7Yerw9BgQFXKbHOSPgSGTmZCpRIt5u3eQNstGHIS2OZCvF6Ji2R7GzIabDEBYMf0UtJVxvf1j0JWuZAZCHIFn',
+        'access_token': 'CAAVPzseZAEVsBAFS83pCuTBZA5ZAeShxMZBmvSqgSMeWo2MxBZCZAZC9dkpsLXwQlvd2kcTUtFKyy4eIkMs21UXqIeTXgPqeRZCftTTm4CDRUQe4755G5dZBrNzNmAER4w2FQfsrifIupYMIe4VkO4pQhECVZBAOsajEqjiiijDI4KuJ3kZCa3zvgAMVhHoZCduWjZC4l2wUST5a3P4ehn5nksuJZC',
     })
 
-user = api.user({'user': 'me'}).get()
+user = api.user(url_params={'user': 'me'}).get()
 # print user.data
 # print user.name.data
 
