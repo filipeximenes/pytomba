@@ -27,9 +27,6 @@ class TwitterClientAdapter(BaseClientAdapter):
                 resource_owner_secret=self.extra_args.get('access_token_secret'))
         }
 
-    def response_to_native(self, response):
-        return response.json()
-
 
 TwitterApiClient = ApiClient(TwitterClientAdapter())
 
@@ -46,5 +43,6 @@ cli = TwitterApiClient({
 # status = cli.statuses_show({'id': 515109944312733696})
 # print(status.user.url())
 
-timeline = cli.user_timeline()
-print(timeline[0].text())
+timeline = cli.user_timeline().get()
+# print timeline[0].text.list_nodes()
+print timeline[0].list_nodes()

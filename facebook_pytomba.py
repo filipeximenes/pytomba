@@ -1,5 +1,9 @@
 # coding: utf-8
 
+# import logging
+# logging.basicConfig(filename='logs.log',level=logging.DEBUG)
+# logging.info("aqui")
+
 from requests_oauthlib import OAuth2
 
 from pytomba import ApiClient, BaseClientAdapter
@@ -37,10 +41,11 @@ FacebookApiClient = ApiClient(FacebookClientAdapter())
 
 api = FacebookApiClient({
         'client_id': '1495124414107995',
-        'access_token': 'CAAVPzseZAEVsBAPIL67nvZBilBuDCLvCSjFZA4Khp2LU9w2o8lIAzZBGuOO07vVpNziykOwUZCpeNdYF3yz06Edse1wxqzHJZA9TnqY6u0t0gJbxBrmSwXsV1vhRGHRZB7FpH7BNVIZC5w0MFPu5ZBvsoBOSoIvTHX84fKxN6EIZAKAigdnJ8zBZBe3iRLGn85T0oSN1gSwzQJjgvOIgJ3MoUsU',
+        'access_token': 'CAAVPzseZAEVsBAIvZAAIZB7OthClPArigGC6gHXVhjNxwzr6gDZA9GRZBeRDKC9GaqUTFiM4soZCoyWrUsvsXvx3KiVI0ZB7rqWWRx5CK4fKl4sdlXOnlR2aXOMwS1aDXVf1bo7Yerw9BgQFXKbHOSPgSGTmZCpRIt5u3eQNstGHIS2OZCvF6Ji2R7GzIabDEBYMf0UtJVxvf1j0JWuZAZCHIFn',
     })
 
-# user = api.user({'user': 'me'}).get()
+user = api.user({'user': 'me'}).get()
+# print user.data
 # print user.name.data
 
 # user = api.user
