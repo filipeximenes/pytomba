@@ -24,6 +24,10 @@ class FacebookClientAdapter(BaseClientAdapter):
             'resource': '{user}/feed',
             'methods': ['get'],
         },
+        'user_likes': {
+            'resource': '{user}/likes',
+            'methods': ['get'],
+        },
     }
 
     def get_request_kwargs(self, api_params):
@@ -35,16 +39,31 @@ class FacebookClientAdapter(BaseClientAdapter):
                     'token_type': 'Bearer'})
         }
 
+    def get_iterator_list(self, response_data):
+        return response_data['data']
+
+    def get_iterator_next_url(self, response_data):
+        paging = response_data.get('paging')
+        if not paging:
+            return
+        
+        return paging.get('next')
+        
 
 FacebookApiClient = ApiClient(FacebookClientAdapter())
 
 
 api = FacebookApiClient(api_params={
         'client_id': '1495124414107995',
-        'access_token': 'CAAVPzseZAEVsBAFS83pCuTBZA5ZAeShxMZBmvSqgSMeWo2MxBZCZAZC9dkpsLXwQlvd2kcTUtFKyy4eIkMs21UXqIeTXgPqeRZCftTTm4CDRUQe4755G5dZBrNzNmAER4w2FQfsrifIupYMIe4VkO4pQhECVZBAOsajEqjiiijDI4KuJ3kZCa3zvgAMVhHoZCduWjZC4l2wUST5a3P4ehn5nksuJZC',
+        'access_token': 'CAAKrTbszVsgBAILxQ35xIMKYL7xhwnMb6iXHurJcWZAsTZB7ZAAIZBsUyOhL3ihCUK8wmBSG6CPMuipjk5hUgDIbcEj020yLZBb67AnNKmAqdF28ufI7MY9aOiSNNwCyGIamF1gzmwpOKFHI1VmPlrvHc78Je2vfIJSasH9VjoFSiaAfpZC4AanxZCTEWonaUoa5sMMA0FzCHxxenB6d5a7',
     })
 
-user = api.user(url_params={'user': 'me'}).get()
+# user_likes = api.user_likes(url_params={'user': 'me'}).get()
+
+# for item in user_likes:
+#     print item.name.data()
+
+
 # print user.data
 # print user.name.data
 

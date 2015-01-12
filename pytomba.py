@@ -65,6 +65,43 @@ class ApiClient(object):
     def __getitem__(self, key):
         return self.__getattr__(key)
 
+    def __iter__(self):
+        return ApiClientIterator(self._api.__class__(), 
+            data=self._data, api_params=self._api_params, 
+            current_attr_name=self._current_attr_name)
+
+
+class ApiClientIterator(ApiClient):
+
+    def __init__(self, *args, **kwargs):
+        super(ApiClientIterator, self).__init__(*args, **kwargs)
+        self._iterator_index = 0
+
+    def next(self):
+        iterator_list = self._api.get_iterator_list(self._data)
+        if self._iterator_index >= len(iterator_list):
+            next_url = self._api.get_iterator_next_url(self._data)
+            if next_url:
+                cli = ApiClient(self._api.__class__(), 
+                    data=next_url, 
+                    api_params=self._api_params)
+                response = cli.get()
+                self._data = response._data
+                self._iterator_index = 0
+            else:
+                raise StopIteration()
+
+        item = iterator_list[self._iterator_index]
+        self._iterator_index += 1
+
+        return ApiClient(self._api.__class__(), 
+            data=item, 
+            api_params=self._api_params, 
+            current_attr_name=self._iterator_index)
+
+    def __iter__(self):
+        return self
+
 
 class BaseClientAdapter(object):
 
@@ -76,3 +113,9 @@ class BaseClientAdapter(object):
 
     def get_request_kwargs(self):
         return {}
+
+    def get_iterator_list(self, response_data):
+        raise NotImplementedError()
+
+    def get_iterator_next_url(self, response_data):
+        raise NotImplementedError()
