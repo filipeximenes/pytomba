@@ -80,9 +80,9 @@ class ApiClientExecutor(ApiClient):
         request_kwargs = self._api.get_request_kwargs(self._api_params)
         request_kwargs.update(kwargs)
 
-        response_data = requests.request(request_method, url=self._data, **request_kwargs)
+        response = requests.request(request_method, url=self._data, **request_kwargs)
         if not raw:
-            response_data = self._api.response_to_native(response_data)
+            response_data = self._api.response_to_native(response)
 
         return ApiClient(self._api.__class__(), data=response_data, api_params=self._api_params)
 
