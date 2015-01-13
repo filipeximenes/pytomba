@@ -82,9 +82,9 @@ class ApiClientExecutor(ApiClient):
 
         response = requests.request(request_method, url=self._data, **request_kwargs)
         if not raw:
-            response_data = self._api.response_to_native(response)
+            response = self._api.response_to_native(response)
 
-        return ApiClient(self._api.__class__(), data=response_data, api_params=self._api_params)
+        return ApiClient(self._api.__class__(), data=response, api_params=self._api_params)
 
     def get(self, *args, **kwargs):
         return self._make_request('GET', *args, **kwargs)
