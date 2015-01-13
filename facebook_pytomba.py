@@ -48,17 +48,19 @@ class FacebookClientAdapter(BaseClientAdapter):
             return
         
         return paging.get('next')
-        
+
 
 FacebookApiClient = ApiClient(FacebookClientAdapter())
 
 
 api = FacebookApiClient(api_params={
         'client_id': '1495124414107995',
-        'access_token': 'CAAKrTbszVsgBAILxQ35xIMKYL7xhwnMb6iXHurJcWZAsTZB7ZAAIZBsUyOhL3ihCUK8wmBSG6CPMuipjk5hUgDIbcEj020yLZBb67AnNKmAqdF28ufI7MY9aOiSNNwCyGIamF1gzmwpOKFHI1VmPlrvHc78Je2vfIJSasH9VjoFSiaAfpZC4AanxZCTEWonaUoa5sMMA0FzCHxxenB6d5a7',
+        'access_token': 'CAAKrTbszVsgBAHtNWyGZCZBP0gMUKnI2zUeWAibmCch6mKfgS3Uney23ZCbq567UzvfZAUTaYV8SxUCcbJPpiMPvR4WUVr9j67WvmBZCg9aMBPThr7NBvIT48SnRzwHsWcQdNRcGXCUjaYLK3cCu1MxWZCLT7dXLTZCzg5WZBD8LIuvcTjopwUcmmcs9xTFbcKZAgqxWsddSz9FCoqGOsGmBo',
     })
 
-# user_likes = api.user_likes(url_params={'user': 'me'}).get()
+user_likes = api.user_likes(url_params={'user': 'me'}).get()
+
+# print user_likes.data
 
 # for item in user_likes:
 #     print item.name.data()
