@@ -65,7 +65,7 @@ class ApiClientExecutor(ApiClient):
         return object.__getattr__(name)
 
     def __getitem__(self, key):
-        return self._data[key]
+        return object.__getitem__(name)
 
     def __iter__(self):
         return self
