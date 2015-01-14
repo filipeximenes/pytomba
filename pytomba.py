@@ -73,14 +73,6 @@ class ApiClientExecutor(ApiClient):
     def data(self):
         return self._data
 
-    def list_nodes(self):
-        if self._data and hasattr(self._data, '__iter__'):
-            if isinstance(self._data, list):
-                return []
-            return self._data.keys()
-
-        return None
-
     def _make_request(self, request_method, raw=False, *args, **kwargs):
         request_kwargs = self._api.get_request_kwargs(self._api_params)
         request_kwargs.update(kwargs)
