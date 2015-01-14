@@ -55,7 +55,7 @@ FacebookApiClient = ApiClient(FacebookClientAdapter())
 
 api = FacebookApiClient(api_params={
         'client_id': '1495124414107995',
-        'access_token': 'CAAKrTbszVsgBAHtNWyGZCZBP0gMUKnI2zUeWAibmCch6mKfgS3Uney23ZCbq567UzvfZAUTaYV8SxUCcbJPpiMPvR4WUVr9j67WvmBZCg9aMBPThr7NBvIT48SnRzwHsWcQdNRcGXCUjaYLK3cCu1MxWZCLT7dXLTZCzg5WZBD8LIuvcTjopwUcmmcs9xTFbcKZAgqxWsddSz9FCoqGOsGmBo',
+        'access_token': 'CAAKrTbszVsgBAIW0Rb5OndtZCL0tnmeTNzlmkylO2awGxGgYxUQ4nYSMmXJ4BN0qlzycKrIs6mM8sGR8StNC4hRwSUNBUo7hsL0MA3DIBrQPvVfmZAZAAC0dlCwgVUIUMtqbKhgOYYMgSEocd6zehyL9BAqPgVqu7RzTEH1EUo3k8bwRigTvwYb9MdvIcAWnHKxjmcmyFPFKMHOGCYE',
     })
 
 user_likes = api.user_likes(url_params={'user': 'me'}).get()

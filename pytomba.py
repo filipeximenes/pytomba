@@ -40,7 +40,7 @@ class ApiClient(object):
         return self.__getattr__(key)
 
     def __iter__(self):
-        return ApiClientIterator(self._api.__class__(), 
+        return ApiClientExecutor(self._api.__class__(), 
             data=self._data, api_params=self._api_params)
 
 
@@ -48,6 +48,7 @@ class ApiClientExecutor(ApiClient):
 
     def __init__(self, *args, **kwargs):
         super(ApiClientExecutor, self).__init__(*args, **kwargs)
+        self._iterator_index = 0
 
     def __call__(self, *args, **kwargs):
         return object.__call__(*args, **kwargs)
@@ -59,7 +60,7 @@ class ApiClientExecutor(ApiClient):
         return self._data[key]
 
     def __iter__(self):
-        return object.__iter__()
+        return self
 
     def data(self):
         return self._data
@@ -87,25 +88,6 @@ class ApiClientExecutor(ApiClient):
 
     def raw_get(self, *args, **kwargs):
         return self._make_request('GET', raw=True, *args, **kwargs)
-
-
-class ApiClientIterator(ApiClient):
-
-    def __init__(self, *args, **kwargs):
-        super(ApiClientIterator, self).__init__(*args, **kwargs)
-        self._iterator_index = 0
-
-    def __call__(self, *args, **kwargs):
-        return object.__call__(*args, **kwargs)
-
-    def __getattr__(self, name):
-        return object.__getattr__(name)
-
-    def __getitem__(self, key):
-        return object.__getitem__(key)
-
-    def __iter__(self):
-        return self
 
     def next(self):
         iterator_list = self._api.get_iterator_list(self._data)
