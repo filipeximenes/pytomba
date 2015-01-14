@@ -1,9 +1,5 @@
 # coding: utf-8
 
-# import logging
-# logging.basicConfig(filename='logs.log',level=logging.DEBUG)
-# logging.info("aqui")
-
 from requests_oauthlib import OAuth2
 
 from pytomba import ApiClient, BaseClientAdapter

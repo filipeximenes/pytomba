@@ -42,6 +42,12 @@ class ApiClient(object):
         return ApiClientExecutor(self._api.__class__(), 
             data=self._data, api_params=self._api_params)
 
+    def __dir__(self):
+        if isinstance(self._data, dict):
+            return self._data.keys()
+
+        return []
+
 
 class ApiClientExecutor(ApiClient):
 
