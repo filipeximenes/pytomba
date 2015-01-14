@@ -38,12 +38,14 @@ class FacebookClientAdapter(BaseClientAdapter):
     def get_iterator_list(self, response_data):
         return response_data['data']
 
-    def get_iterator_next_url(self, response_data):
+    def get_iterator_next_request_kwargs(self, iterator_request_kwargs, response_data):
         paging = response_data.get('paging')
         if not paging:
             return
-        
-        return paging.get('next')
+        url = paging.get('next')
+
+        if url:
+            return {'url': url}
 
 
 FacebookApiClient = ApiClient(FacebookClientAdapter())
