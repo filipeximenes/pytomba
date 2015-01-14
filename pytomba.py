@@ -13,7 +13,7 @@ class ApiClient(object):
     def __call__(self, *args, **kwargs):
         if 'api_params' in kwargs:
             self._api_params = kwargs['api_params']
-            return ApiClient(self._api.__class__(), api_params=self._api_params)
+            return ApiClient(self._api.__class__(), data=self._data, api_params=self._api_params)
 
         if 'url_params' in kwargs:
             url = self._api.fill_resource_template_url(self._data, kwargs['url_params'])
