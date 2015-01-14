@@ -48,10 +48,12 @@ class FacebookClientAdapter(BaseClientAdapter):
 
 FacebookApiClient = ApiClient(FacebookClientAdapter())
 
+from decouple import config
+
 
 api = FacebookApiClient(api_params={
-        'client_id': '1495124414107995',
-        'access_token': 'CAAKrTbszVsgBAIW0Rb5OndtZCL0tnmeTNzlmkylO2awGxGgYxUQ4nYSMmXJ4BN0qlzycKrIs6mM8sGR8StNC4hRwSUNBUo7hsL0MA3DIBrQPvVfmZAZAAC0dlCwgVUIUMtqbKhgOYYMgSEocd6zehyL9BAqPgVqu7RzTEH1EUo3k8bwRigTvwYb9MdvIcAWnHKxjmcmyFPFKMHOGCYE',
+        'client_id': config('FACEBOOK_CLIENT_ID'),
+        'access_token': config('FACEBOOK_ACCESS_TOKEN'),
     })
 
 user_likes = api.user_likes(url_params={'user': 'me'}).get()

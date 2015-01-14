@@ -34,10 +34,10 @@ from decouple import config
 
 
 cli = TwitterApiClient(api_params={
-        'api_key': config('API_KEY'),
-        'api_secret': config('API_SECRET'),
-        'access_token': config('ACCESS_TOKEN'),
-        'access_token_secret':  config('ACCESS_TOKEN_SECRET'),
+        'api_key': config('TWITTER_API_KEY'),
+        'api_secret': config('TWITTER_API_SECRET'),
+        'access_token': config('TWITTER_ACCESS_TOKEN'),
+        'access_token_secret':  config('TWITTER_ACCESS_TOKEN_SECRET'),
     })
 
 # status = cli.statuses_show({'id': 515109944312733696})
