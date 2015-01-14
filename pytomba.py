@@ -43,6 +43,9 @@ class ApiClient(object):
             data=self._data, api_params=self._api_params)
 
     def __dir__(self):
+        if self._api and self._data == None:
+            return [key for key in self._api.resource_mapping.keys()]
+
         if isinstance(self._data, dict):
             return self._data.keys()
 
