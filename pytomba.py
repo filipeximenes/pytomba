@@ -5,13 +5,11 @@ import requests
 
 class ApiClient(object):
 
-    def __init__(self, api, resource=None, data=None, api_params={}, 
-        current_attr_name=None, *args, **kwargs):
+    def __init__(self, api, resource=None, data=None, api_params={}, *args, **kwargs):
         self._api = api
         self._resource = resource
         self._data = data
         self._api_params = api_params
-        self._current_attr_name = current_attr_name
 
     def __call__(self, *args, **kwargs):
         if 'api_params' in kwargs:
@@ -22,20 +20,19 @@ class ApiClient(object):
             url = self._api.fill_resource_template_url(self._data, kwargs['url_params'])
             return ApiClientExecutor(self._api.__class__(), data=url, api_params=self._api_params)
 
-        return ApiClientExecutor(self._api.__class__(), data=self._data, 
-            api_params=self._api_params, current_attr_name=self._current_attr_name)
+        return ApiClientExecutor(self._api.__class__(), data=self._data, api_params=self._api_params)
 
     def __getattr__(self, name):
         if self._data and \
             ((isinstance(self._data, list) and isinstance(name, int)) or \
                 (hasattr(self._data, '__iter__') and name in self._data)):
-            return ApiClient(self._api.__class__(), data=self._data[name], api_params=self._api_params, current_attr_name=name)
+            return ApiClient(self._api.__class__(), data=self._data[name], api_params=self._api_params)
 
         resource_mapping = self._api.resource_mapping
         if name in resource_mapping:
             resource = resource_mapping[name]
             url = self._api.api_root + '/' + resource['resource']
-            return ApiClient(self._api.__class__(), data=url, api_params=self._api_params, current_attr_name=name)
+            return ApiClient(self._api.__class__(), data=url, api_params=self._api_params)
 
         raise KeyError(name)
 
@@ -44,8 +41,7 @@ class ApiClient(object):
 
     def __iter__(self):
         return ApiClientIterator(self._api.__class__(), 
-            data=self._data, api_params=self._api_params, 
-            current_attr_name=self._current_attr_name)
+            data=self._data, api_params=self._api_params)
 
 
 class ApiClientExecutor(ApiClient):
@@ -128,10 +124,7 @@ class ApiClientIterator(ApiClient):
         item = iterator_list[self._iterator_index]
         self._iterator_index += 1
 
-        return ApiClient(self._api.__class__(), 
-            data=item, 
-            api_params=self._api_params, 
-            current_attr_name=self._iterator_index)
+        return ApiClient(self._api.__class__(), data=item, api_params=self._api_params)
 
 
 class BaseClientAdapter(object):

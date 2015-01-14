@@ -1,6 +1,7 @@
 - Pagination
 - "list_nodes"
 - HTML client
+- print documentation
 
 
 resource_list = api.resource_list()
