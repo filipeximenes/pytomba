@@ -5,9 +5,8 @@ import requests
 
 class ApiClient(object):
 
-    def __init__(self, api, resource=None, data=None, api_params={}, *args, **kwargs):
+    def __init__(self, api, data=None, api_params={}, *args, **kwargs):
         self._api = api
-        self._resource = resource
         self._data = data
         self._api_params = api_params
 
