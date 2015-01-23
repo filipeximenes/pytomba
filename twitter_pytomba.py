@@ -8,9 +8,9 @@ from pytomba import ApiClient, BaseClientAdapter
 class TwitterClientAdapter(BaseClientAdapter):
     api_root = 'https://api.twitter.com/1.1'
     resource_mapping = {
-        'mentions_timeline': {
+        'statuses_mentions_timeline': {
             'resource': '/statuses/mentions_timeline.json',
-            'docs': 'https://dev.twitter.com/rest/reference/get/statuses/user_timeline'
+            'docs': 'https://dev.twitter.com/rest/reference/get/statuses/mentions_timeline'
         },
         'statuses_user_timeline': {
             'resource': 'statuses/user_timeline.json',
