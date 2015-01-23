@@ -6,7 +6,7 @@ from pytomba import ApiClient, BaseClientAdapter
 
 
 class FacebookClientAdapter(BaseClientAdapter):
-    api_root = 'https://graph.facebook.com'
+    api_root = 'https://graph.facebook.com/v2.2'
     resource_mapping = {
         'object': {
             'resource': '{id}',
