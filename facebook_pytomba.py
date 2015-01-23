@@ -10,7 +10,7 @@ class FacebookClientAdapter(BaseClientAdapter):
     resource_mapping = {
         'object': {
             'resource': '{id}',
-            'docs': 'https://developers.facebook.com/docs/graph-api/reference'
+            'docs': 'https://developers.facebook.com/docs/graph-api/reference/v2.2'
         },
         'user_accounts': {
             'resource': '{id}/accounts',
