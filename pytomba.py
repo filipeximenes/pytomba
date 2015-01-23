@@ -1,15 +1,18 @@
 # coding: utf-8
 
 import requests
+import webbrowser
 
 
 class ApiClient(object):
 
-    def __init__(self, api, data=None, request_kwargs=None, api_params={}, *args, **kwargs):
+    def __init__(self, api, data=None, request_kwargs=None, api_params={}, 
+            resource=None, *args, **kwargs):
         self._api = api
         self._data = data
         self._api_params = api_params
         self._request_kwargs = request_kwargs
+        self._resource = resource
 
     def __call__(self, *args, **kwargs):
         if 'api_params' in kwargs:
@@ -20,7 +23,8 @@ class ApiClient(object):
             url = self._api.fill_resource_template_url(self._data, kwargs['url_params'])
             return ApiClientExecutor(self._api.__class__(), data=url, api_params=self._api_params)
 
-        return ApiClientExecutor(self._api.__class__(), data=self._data, api_params=self._api_params)
+        return ApiClientExecutor(self._api.__class__(), data=self._data, api_params=self._api_params,
+            resource=self._resource)
 
     def __getattr__(self, name):
         if self._data and \
@@ -32,7 +36,8 @@ class ApiClient(object):
         if name in resource_mapping:
             resource = resource_mapping[name]
             url = self._api.api_root + '/' + resource['resource']
-            return ApiClient(self._api.__class__(), data=url, api_params=self._api_params)
+            return ApiClient(self._api.__class__(), data=url, api_params=self._api_params, 
+                resource=resource)
 
         raise KeyError(name)
 
@@ -112,6 +117,18 @@ class ApiClientExecutor(ApiClient):
         self._iterator_index += 1
 
         return ApiClient(self._api.__class__(), data=item, api_params=self._api_params)
+
+    def open_docs(self):
+        if not self._resource:
+            raise KeyError()
+            
+        new = 2 # open in new tab
+        webbrowser.open(self._resource['docs'], new=new)
+
+    def open_in_browser(self):
+        new = 2 # open in new tab
+        webbrowser.open(self._data, new=new)        
+
 
 
 class BaseClientAdapter(object):
